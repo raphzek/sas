@@ -500,7 +500,7 @@ Ajoutons maintenant au fichier les Unités d'Organisation. Nous allons créer ic
     dn: ou=Groupe,dc=asr.fr,dc=local
     ou: Groupe
     objectClass: organizationalUnit
-    description : Groupe de personnes
+    description : Groupe d'utilisateurs
     
     #Création de l'utilisateur
     dn: cn=Zekri Raphael,ou=Groupe,dc=asr.fr,dc=local

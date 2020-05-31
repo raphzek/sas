@@ -453,6 +453,80 @@ Enfin commme d'habitude, on redémarre :
 
 ## ***Lightweight Directory Access Protocol (Ldap)***
 
+Commencons par installer les packages nécessaires à l'installation du serveur openldap :
+
+    apt‐get install slapd ldap‐utils
+
+Nous allons à présent configurer le sldap en deux étapes. Tout d'abord en éxécutant la commande suivante :
+
+    dpkg‐reconfigure slapd
+
+Puis en modifiant le fichier ***/etc/ldap/ldap.conf*** de cette manière :
+
+    BASE     dc=asr,dc=local
+    URI      ldap://openldap.mondomaine.local/
+
+### **Nouveau noeud**
+
+Ceci terminé, il faut configurer les fichiers LDIF et DIT.
+Créons alors un fichier que nous appellerons *configuration.ldif* et ajoutons dans celui-ci les lignes suivantes :
+
+    dn: cn=config
+    changetype: modify
+    replace: olcLogLevel
+    olcLogLevel: stats
+
+    dn: olcDatabase={1}hdb,cn=config
+    changetype: modify
+    add: olcDbIndex
+    olcDbIndex: uid eq
+
+    add: olcDbIndex
+    olcDbIndex: cn eq
+
+    add: olcDbIndex
+    olcDbIndex: ou eq
+
+    add: olcDbIndex
+    olcDbIndex: dc eq
+
+On enregistre les modifications comme ceci :
+
+    ldapmodify -QY EXTERNAL -H ldapi:/// -f ~/olc-mod1.ldif
+
+Ajoutons maintenant au fichier les Unités d'Organisation. Nous allons créer ici un groupe qui pourra contenir des utilisateurs dont un que l'on va créer aussi. Voici les lignes correspondantes :
+
+    #création du groupe
+    dn: ou=Groupe,dc=asr.fr,dc=local
+    ou: Groupe
+    objectClass: organizationalUnit
+    description : Groupe de personnes
+    
+    #Création de l'utilisateur
+    dn: cn=Zekri Raphael,ou=Groupe,dc=asr.fr,dc=local
+    objectClass: posixGroup
+    givenName: Raphael
+    cn: Raphael Zekri
+    uid: Raph30
+    userPassword: LDAP 
+
+La classe **posixGroup** nous a permis d'ajouter Raphael Zekri au groupe. Nous aurions pu donner d'autres information sur Raphael Zekri comme son numéro par exemple.
+
+On va maintenant prendre en compte cette nouvelle Unité d'Organisation et son utilisateur en tapant les lignes suivantes :
+
+    ldapadd -x -W -D 'cn=admin,dc=asr.fr,dc=com' -H ldap://localhost‐f configuration.ldif
+    Enter LDAP Password:
+    adding new entry "ou=Groupe,dc=asr.fr,dc=local"
+    adding new entry "cn=Zekri Raphael,ou=Groupe,dc=asr.fr,dc=local"
+
+-x : Authentification simple  
+-W : Permet de taper le mot de passe du compte de manière intéractive  
+-D : Donne le Distinguished Name du compte à connecter 
+-H : indique la méthode de connexion
+
+Enfin on vérifie que l'utilisateur a bien intégré le groupe comme ceci :
+
+    ldapsearch -xLLL uid=Raph30
 
 
 

@@ -521,7 +521,7 @@ On va maintenant prendre en compte cette nouvelle Unité d'Organisation et son u
 
 -x : Authentification simple  
 -W : Permet de taper le mot de passe du compte de manière intéractive  
--D : Donne le Distinguished Name du compte à connecter 
+-D : Donne le Distinguished Name du compte à connecter   
 -H : indique la méthode de connexion
 
 Enfin on vérifie que l'utilisateur a bien intégré le groupe comme ceci :

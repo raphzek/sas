@@ -345,7 +345,7 @@ Puis, vérifier le contenue de ***/etc/bind/db.asr.fr.inv*** :
              604800 )	; Negative Cache TTL
     ;
     @	IN	NS	server.asr.fr.
-    4	IN	PTR c3.asr.fr.
+    4	IN	PTR 	c3.asr.fr.
     5 	IN	PTR	c2.asr.fr.
     2	IN 	PTR	server.asr.fr.
 

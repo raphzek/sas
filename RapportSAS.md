@@ -492,7 +492,7 @@ Créons alors un fichier que nous appellerons *configuration.ldif* et ajoutons d
 
 On enregistre les modifications comme ceci :
 
-    ldapmodify -QY EXTERNAL -H ldapi:/// -f ~/olc-mod1.ldif
+    ldapmodify -QY EXTERNAL -H ldapi:/// -f ~/configuration.ldif
 
 Ajoutons maintenant au fichier les Unités d'Organisation. Nous allons créer ici un groupe qui pourra contenir des utilisateurs dont un que l'on va créer aussi. Voici les lignes correspondantes :
 
